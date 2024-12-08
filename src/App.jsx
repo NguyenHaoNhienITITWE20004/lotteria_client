@@ -1,11 +1,8 @@
-import { useState } from 'react';
+import { RouterProvider } from 'react-router-dom';
+import mainRouter from './router';
 
 function App() {
-	return (
-		<>
-			<div className="text-red-500">Hello</div>
-		</>
-	);
+  return <RouterProvider router={mainRouter} />;
 }
 
 export default App;

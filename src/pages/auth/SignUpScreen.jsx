@@ -1,5 +1,6 @@
 import React from 'react';
 
-export const SignUpScreen = () => {
-	return <div>SignUpScreen</div>;
+const SignUpScreen = () => {
+  return <div>SignUpScreen</div>;
 };
+export default SignUpScreen;
