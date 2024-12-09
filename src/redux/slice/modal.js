@@ -12,6 +12,14 @@ const initialState = {
       isOpen: false,
       content: null,
     },
+    [ModalTypes.USER]: {
+      isOpen: false,
+      content: null,
+    },
+    [ModalTypes.PRODUCT]: {
+      isOpen: false,
+      content: null,
+    },
   },
 };
 

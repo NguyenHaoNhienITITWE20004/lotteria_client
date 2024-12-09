@@ -5,3 +5,8 @@
 body {
   @apply font-roboto;
 }
+@layer components {
+  .custom-modal .ant-modal-content {
+    @apply p-0;
+  }
+}

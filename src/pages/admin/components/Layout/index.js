@@ -1,3 +1,3 @@
 export { default as HeaderAdmin } from './HeaderAdmin';
-export { default as NavigateAdmin } from './NavigateAdmin';
-export { default as Layout } from './LayoutAdmin';
+export { default as SidebarAdmin } from './SidebarAdmin';
+export { default as LayoutAdmin } from './LayoutAdmin';
