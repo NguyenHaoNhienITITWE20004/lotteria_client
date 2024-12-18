@@ -17,6 +17,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, isLogin } = useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth);
+  console.log('🚀 ~ Header ~ user:', user);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 

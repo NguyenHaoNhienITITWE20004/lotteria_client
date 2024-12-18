@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/layout';
 import { HomeScreen } from './pages/home';
-import { ProductList } from './pages/product';
+import { ProductList, ProductMain } from './pages/product';
 import { CartScreen } from './pages/cart';
 import OrderScreen from './pages/order/OrderScreen';
 import { LayoutAdmin } from './pages/admin/components/Layout';
@@ -22,6 +22,10 @@ const mainRouter = createBrowserRouter([
       {
         path: '/products',
         element: <ProductList />,
+      },
+      {
+        path: '/product/:id',
+        element: <ProductMain />,
       },
       {
         path: '/cart',

@@ -10,12 +10,12 @@ import { loginSuccess } from '../../redux/slice/auth';
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const dispatch = useDispatch();
   const signInModal = useSelector(
     (state) => state.modal.modals[ModalTypes.SIGN_IN],
   );
   const handleCancel = () => {
-    console.log(123);
     dispatch(closeModal({ name: ModalTypes.SIGN_IN }));
   };
 
@@ -24,6 +24,7 @@ const SignInScreen = () => {
       const userSignIn = { email, password };
       const result = await signIn(userSignIn);
       if (result && result.success) {
+        console.log('result', result);
         notification.success({
           message: 'Đăng nhập thành công',
           description: 'Bạn đã đăng nhập thành công!',

@@ -12,6 +12,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../../../../redux/slice/modal';
 import { ModalTypes } from '../../../../constant/modal';
+import { formatDate } from '../../../../util/format';
 
 const ManageUser = () => {
   const userModal = useSelector((state) => state.modal.modals[ModalTypes.USER]);
@@ -70,7 +71,6 @@ const ManageUser = () => {
   };
 
   const handleModalOk = async (userData) => {
-    console.log(111222);
     try {
       setLoading(true);
       if (content) {
@@ -97,8 +97,6 @@ const ManageUser = () => {
     } catch (error) {
       console.log(error);
       message.error('Có gì đó sai sai');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -128,32 +126,37 @@ const ManageUser = () => {
     },
     {
       title: 'Role',
-      dataIndex: 'roleId',
-      key: 'roleId',
-      render: (roleId) => {
+      dataIndex: 'role_id',
+      key: 'role_id',
+      render: (role_id) => {
         const roleMap = { 1: 'Customer', 2: 'Owner' };
-        const color = roleId === 2 ? 'red' : 'blue';
-        return <Tag color={color}>{roleMap[roleId]}</Tag>;
+        const color = role_id === 2 ? 'red' : 'blue';
+        return <Tag color={color}>{roleMap[role_id]}</Tag>;
       },
     },
     {
       title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (createdAt) => {
-        const formattedDate = moment(createdAt).format('YYYY-MM-DD HH:mm:ss'); // Định dạng ngày tháng
-        return <div>{formattedDate}</div>;
+      dataIndex: 'created_at',
+      key: 'created_at',
+      render: (created_at) => {
+        return <div>{formatDate(created_at)}</div>;
       },
       filters: [
+        { text: 'today', value: 'last1' },
         { text: 'Last 7 Days', value: 'last7' },
         { text: 'Last 30 Days', value: 'last30' },
         { text: 'This Month', value: 'thisMonth' },
         { text: 'Last Month', value: 'lastMonth' },
       ],
-      sorter: (a, b) => moment(a.createdAt).unix() - moment(b.createdAt).unix(),
+      sorter: (a, b) =>
+        moment(a.created_at).unix() - moment(b.created_at).unix(),
       onFilter: (value, record) => {
-        const createdAt = moment(record.createdAt);
+        console.log(value);
+        const createdAt = moment(record.created_at);
         switch (value) {
+          case 'last1':
+            console.log(123);
+            return createdAt.isAfter(moment().subtract(1, 'days'));
           case 'last7':
             return createdAt.isAfter(moment().subtract(7, 'days'));
           case 'last30':

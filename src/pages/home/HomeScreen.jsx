@@ -1,37 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Pagination, Autoplay } from 'swiper/modules';
 import SignInScreen from '../auth/SignInScreen';
+import { Divider } from 'antd';
+import ProductList from '../product/components/ProductList';
+import { highlightItems, slides } from '../../constant/home';
+import { getCategories } from '../../service/category';
 
 const HomeScreen = () => {
-  const slides = [
-    {
-      id: 1,
-      link: 'https://www.lotteria.vn/media/banner/b/a/banner_banner_web_18__1.jpg',
-    },
-    {
-      id: 2,
-      link: 'https://www.lotteria.vn/media/banner/b/a/banner_banner_web_16_.jpg',
-    },
-    {
-      id: 3,
-      link: 'https://www.lotteria.vn/media/banner/m/_/m_n_th_u_free_banner_web.jpg',
-    },
-    {
-      id: 4,
-      link: 'https://www.lotteria.vn/media/banner/b/a/banner_-_delivery_ti_c_chill_-_ti_c_b_ng_n__banner_web_2_-min_1_.jpg',
-    },
-    {
-      id: 5,
-      link: 'https://www.lotteria.vn/media/banner/b/a/banner_-_th_ng_12_u_i_12k_banner_web_2_.jpg',
-    },
-    {
-      id: 6,
-      link: 'https://www.lotteria.vn/media/banner/b/a/banner_banner_web_16__2.jpg',
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+  const [products, setProduct] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const categoriesRes = await getCategories();
+      if (categoriesRes && categoriesRes) {
+        setCategories(categoriesRes.data);
+      } else {
+        setCategories([]);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div>
@@ -53,7 +45,49 @@ const HomeScreen = () => {
           ))}
         </Swiper>
       </div>
-      <div>
+      <div className='container mx-auto'>
+        <div className='grid grid-cols-4 gap-4 mt-4 c bg-footer-main px-0'>
+          {highlightItems.map((item) => (
+            <div
+              key={item.id}
+              className='bg-contain bg-left px-5 bg-no-repeat h-[110px] relative hover:bg-red-500 hover:text-white cursor-pointer group'
+              style={{ backgroundImage: `url(${item.imageUrl})` }}
+            >
+              <p className='text-[#ff5b6a] text-lg font-semibold absolute top-1/2 -translate-y-1/2 right-[30px] group-hover:text-white'>
+                {item.title}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {categories.length > 0 &&
+          categories.map((category) => {
+            return (
+              <div className='pt-8' key={category.id}>
+                <div className='w-10'>
+                  <Divider
+                    className='max-w-2'
+                    style={{ border: '1px red solid' }}
+                  />
+                </div>
+                <p className='text-xl font-semibold'>{category.name}</p>
+                <div className='pt-6'>
+                  <ProductList category={category} />
+                </div>
+              </div>
+            );
+          })}
+
+        {/* <div className='pt-8'>
+          <div className='w-10'>
+            <Divider className='max-w-2' style={{ border: '1px red solid' }} />
+          </div>
+          <p className='text-xl font-semibold'>ƯU ĐÃI ĐẶC BIỆT</p>
+          <div className='pt-6'>
+            <ProductList category={''} />
+          </div>
+        </div> */}
+
         <SignInScreen />
       </div>
     </div>
