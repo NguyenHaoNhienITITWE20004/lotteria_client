@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import logo from '../../assets/images/lotteria_logo.png';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Button, Select, Dropdown, Space, Popconfirm } from 'antd';
+import { Button, Select, Dropdown, Space, Popconfirm, Badge } from 'antd';
 import {
   accountMenu,
   navigateItems,
@@ -12,8 +12,10 @@ import { openModal } from '../../redux/slice/modal';
 import { ModalTypes } from '../../constant/modal';
 import { DownOutlined } from '@ant-design/icons';
 import { logoutSuccess } from '../../redux/slice/auth';
+import { selectCartTotalQuantity } from '../../redux/slice/cart';
 
 const Header = () => {
+  const totalQuantityCart = useSelector(selectCartTotalQuantity);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, isLogin } = useSelector((state) => state.auth);
@@ -22,9 +24,12 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOpenModalSignIn = (id) => {
+  const handleClickIcon = (id) => {
     if (id === 2) {
       dispatch(openModal({ name: ModalTypes.SIGN_IN, info: '' }));
+    }
+    if (id === 4) {
+      navigate('/cart');
     }
   };
 
@@ -164,10 +169,15 @@ const Header = () => {
                 return (
                   <div
                     key={item.id}
-                    onClick={() => handleOpenModalSignIn(item.id)}
-                    className='w-10 h-10 border-[1px] rounded-full flex items-center justify-center cursor-pointer'
+                    onClick={() => handleClickIcon(item.id)}
+                    className='w-10 tex h-10 border-[1px] rounded-full flex items-center justify-center cursor-pointer relative'
                   >
                     <img src={item.link} alt='' />
+                    {item.id === 4 && (
+                      <div className='absolute -right-5 -top-2'>
+                        <Badge count={totalQuantityCart} />
+                      </div>
+                    )}
                   </div>
                 );
               }

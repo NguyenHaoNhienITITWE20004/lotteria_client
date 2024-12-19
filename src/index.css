@@ -9,4 +9,10 @@ body {
   .custom-modal .ant-modal-content {
     @apply p-0;
   }
+  .custom-switch {
+    @apply rounded-full bg-gray-200 !important;
+  }
+  .custom-switch-checked {
+    @apply bg-red-500 !important;
+  }
 }

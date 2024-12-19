@@ -1,5 +1,6 @@
 import authReducer from './slice/auth';
 import modalReducer from './slice/modal';
+import cartReducer from './slice/cart';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import {
   FLUSH,
@@ -23,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   auth: authReducer,
   modal: modalReducer,
+  cart: cartReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

@@ -1,16 +1,27 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
-import { Button, Card, Tooltip } from 'antd';
+import { Button, Card, message, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { formatCurrencyVND } from '../../../util/format';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../../redux/slice/cart';
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch();
   const { Meta } = Card;
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/product/${product.id}`);
+  };
+
+  const handleAddToCart = async (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addItemToCart(product));
+    message.success('Đã thêm sản phẩm vào giỏ hàng');
+    console.log(123);
   };
 
   return (
@@ -40,6 +51,7 @@ const ProductCard = ({ product }) => {
                   <Tooltip title='Thêm vào giỏ hàng'>
                     <Button
                       icon={<PlusOutlined />}
+                      onClick={(e) => handleAddToCart(e, product)}
                       className='bg-red-400 text-white hover:bg-red-600'
                       size='large'
                     />
