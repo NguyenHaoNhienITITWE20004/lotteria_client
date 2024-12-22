@@ -8,11 +8,25 @@ import { Divider } from 'antd';
 import ProductList from '../product/components/ProductList';
 import { highlightItems, slides } from '../../constant/home';
 import { getCategories } from '../../service/category';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../redux/slice/modal';
+import { ModalTypes } from '../../constant/modal';
+import SignUpScreen from '../auth/SignUpScreen';
+import useAuth from '../../hook/useAuth';
 
 const HomeScreen = () => {
   const [categories, setCategories] = useState([]);
-  const [products, setProduct] = useState([]);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { isAdmin } = useAuth();
+  console.log(isAdmin);
 
+  useEffect(() => {
+    if (location.state?.openModal) {
+      dispatch(openModal({ name: ModalTypes.SIGN_IN }));
+    }
+  }, []);
   useEffect(() => {
     const fetchCategories = async () => {
       const categoriesRes = await getCategories();
@@ -89,6 +103,7 @@ const HomeScreen = () => {
         </div> */}
 
         <SignInScreen />
+        <SignUpScreen />
       </div>
     </div>
   );

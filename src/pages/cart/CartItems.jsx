@@ -1,14 +1,20 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { Button, Input, message } from 'antd';
+import React, { useState } from 'react';
+import { Button, Input } from 'antd';
 import { MinusOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { removeItemFromCart, updateItemQuantity } from '../../redux/slice/cart';
+import {
+  removeItemFromCart,
+  updateItemQuantity,
+  updateNote,
+} from '../../redux/slice/cart';
 
 const CartItems = ({ cartItems }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [note, setNote] = useState('');
 
   const handleUpdateQuantity = (itemId, newQuantity) => {
     if (newQuantity < 1) {
@@ -19,6 +25,12 @@ const CartItems = ({ cartItems }) => {
 
   const handleRemoveItem = (itemId) => {
     dispatch(removeItemFromCart(itemId));
+  };
+
+  const handleNoteChange = (e) => {
+    const newNote = e.target.value;
+    setNote(newNote);
+    dispatch(updateNote(newNote));
   };
 
   return (
@@ -92,6 +104,8 @@ const CartItems = ({ cartItems }) => {
       <div className='mt-6'>
         <Input.TextArea
           rows={2}
+          value={note}
+          onChange={handleNoteChange}
           placeholder='Ghi chú cho đơn hàng'
           className='rounded'
         />

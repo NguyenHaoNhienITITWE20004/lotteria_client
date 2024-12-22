@@ -4,6 +4,7 @@ import { calculateCartTotals } from '../../util/calculate';
 const initialState = {
   items: [],
   totalQuantity: 0,
+  note: '',
   totalPrice: 0,
 };
 
@@ -43,11 +44,15 @@ const cartSlice = createSlice({
       state.totalQuantity = totalQuantity;
       state.totalPrice = totalPrice;
     },
+    updateNote: (state, action) => {
+      state.note = action.payload;
+    },
 
     clearCart: (state) => {
       state.items = [];
       state.totalQuantity = 0;
       state.totalPrice = 0;
+      state.note = '';
     },
   },
 });
@@ -56,10 +61,12 @@ export const {
   addItemToCart,
   removeItemFromCart,
   updateItemQuantity,
+  updateNote,
   clearCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
 export const selectCartItems = (state) => state.cart.items;
+export const selectCartNote = (state) => state.cart.note;
 export const selectCartTotalQuantity = (state) => state.cart.totalQuantity;
 export const selectCartTotalPrice = (state) => state.cart.totalPrice;

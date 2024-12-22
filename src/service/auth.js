@@ -7,7 +7,7 @@ const signIn = async (userSignIn) => {
 
 const signUp = async (userSignUp) => {
   try {
-    const res = await apiClient.post('/api/auth/sing-up', userSignUp);
+    const res = await apiClient.post('/api/auth/sign-up', userSignUp);
     return res.data;
   } catch (error) {
     throw new Error(error);

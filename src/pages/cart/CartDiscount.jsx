@@ -1,4 +1,5 @@
-// DiscountInput.jsx
+/* eslint-disable react/prop-types */
+
 import React, { useState } from 'react';
 import { Input, Button, message } from 'antd';
 

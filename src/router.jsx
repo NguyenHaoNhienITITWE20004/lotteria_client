@@ -9,6 +9,8 @@ import HomeAdminScreen from './pages/admin/features/home/HomeAdminScreen';
 import ManageProduct from './pages/admin/features/product/ManageProduct';
 import ManageDiscount from './pages/admin/features/discount/ManageDiscount';
 import ManageUser from './pages/admin/features/user/ManageUser';
+import PaymentScreen from './pages/payment/PaymentScreen';
+import ProtectedRoute from './components/protected/ProtectedRoute';
 
 const mainRouter = createBrowserRouter([
   {
@@ -25,21 +27,41 @@ const mainRouter = createBrowserRouter([
       },
       {
         path: '/product/:id',
-        element: <ProductMain />,
+        element: (
+          <ProtectedRoute requireAdmin='false'>
+            <ProductMain />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/cart',
-        element: <CartScreen />,
+        element: (
+          <ProtectedRoute requireAdmin='false'>
+            <CartScreen />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/order',
-        element: <OrderScreen />,
+        element: (
+          <ProtectedRoute requireAdmin='false'>
+            <OrderScreen />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/payment/vnpay-return',
+        element: <PaymentScreen />,
       },
     ],
   },
   {
     path: '/admin',
-    element: <LayoutAdmin />,
+    element: (
+      <ProtectedRoute requireAdmin={true}>
+        <LayoutAdmin />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '',

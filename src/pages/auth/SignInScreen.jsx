@@ -95,12 +95,17 @@ const SignInScreen = () => {
               Tiếp tục
             </button>
             <div className='text-center mt-4'>
-              <a
-                href='#'
+              <p
                 className='text-red-500 text-base hover:text-gray-700'
+                onClick={() => {
+                  dispatch(closeModal({ name: ModalTypes.SIGN_IN }));
+                  dispatch(
+                    openModal({ name: ModalTypes.SIGN_UP, content: null }),
+                  );
+                }}
               >
-                Mua hàng không cần tài khoản
-              </a>
+                Chưa có tài khoản hãy đăng ký
+              </p>
             </div>
             <div className='text-center pt-4'>Hoặc đăng nhập bằng</div>
 

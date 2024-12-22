@@ -16,7 +16,7 @@ const useAxios = ({
 
   const fetchData = async () => {
     setLoading(true);
-    setError(null); // Reset error before new request
+    setError(null);
     try {
       const response = await (fetchFunction || apiClient)({
         url,

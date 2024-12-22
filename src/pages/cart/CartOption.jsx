@@ -1,12 +1,83 @@
-import React from 'react';
-import { Button, Input, Switch } from 'antd';
-import { useSelector } from 'react-redux';
-import { selectCartTotalPrice } from '../../redux/slice/cart';
+import React, { useState } from 'react';
+import { Button, Input, message, Select, Switch } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  selectCartItems,
+  selectCartNote,
+  selectCartTotalPrice,
+} from '../../redux/slice/cart';
 import { formatCurrencyVND } from '../../util/format';
 import CartDiscount from './CartDiscount';
+import { useNavigate } from 'react-router-dom';
+import { createOrder } from '../../service/order';
+import payment from '../../service/payment';
+import useAuth from '../../hook/useAuth';
 
 const CartOptions = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const userId = currentUser.id;
+  console.log(userId);
+  const cartItems = useSelector(selectCartItems);
   const totalPrice = useSelector(selectCartTotalPrice);
+  const note = useSelector(selectCartNote);
+
+  const [shippingAddress, setShippingAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('vnpay');
+
+  const handleContinue = async () => {
+    if (cartItems.length === 0) {
+      return message.error('Giỏ hàng không có sản phẩm.');
+    }
+    if (!shippingAddress || !phone || !paymentMethod) {
+      return message.error('Vui lòng nhập đầy đủ thông tin.');
+    }
+
+    const orderData = {
+      userId,
+      totalPrice: totalPrice,
+      orderDetails: cartItems.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      shippingAddress,
+      phone,
+      paymentMethod,
+      note,
+    };
+
+    console.log('orderData', orderData);
+
+    try {
+      const orderRes = await createOrder(orderData);
+
+      if (orderRes && orderRes.success && orderRes.order) {
+        const orderCreated = orderRes.order;
+        const paymentData = {
+          paymentId: orderCreated.payment_id,
+          totalPrice: orderCreated.total_price,
+          returnUrl: 'http://localhost:5173/payment/vnpay-return',
+        };
+
+        const paymentRes = await payment(paymentData);
+        console.log(paymentRes);
+        if (paymentRes && paymentRes.success) {
+          console.log(paymentRes.paymentUrl);
+          window.location.href = paymentRes.paymentUrl;
+        } else {
+          message.error('Thanh toán không thành công, vui lòng thử lại.');
+        }
+      } else {
+        message.error('Tạo đơn hàng không thành công, vui lòng thử lại.');
+      }
+    } catch (error) {
+      console.error(error);
+      message.error('Đặt hàng thất bại, vui lòng thử lại.');
+    }
+  };
 
   return (
     <div className='w-full bg-white p-6 rounded-lg shadow-lg mt-6 lg:mt-0 lg:ml-6'>
@@ -22,6 +93,8 @@ const CartOptions = () => {
           <Input.TextArea
             rows={2}
             placeholder='Nhập địa chỉ giao hàng của bạn...'
+            value={shippingAddress}
+            onChange={(e) => setShippingAddress(e.target.value)}
             className='rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
           />
         </div>
@@ -32,10 +105,13 @@ const CartOptions = () => {
           </label>
           <Input
             placeholder='Nhập số điện thoại của bạn...'
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className='rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
           />
         </div>
       </div>
+
       <div className='border-t border-red-300 my-6'></div>
       <div className='mb-3'>
         <div className='space-y-2'>
@@ -53,10 +129,26 @@ const CartOptions = () => {
           </div>
         </div>
       </div>
+
       <div className='border-t border-red-300 my-6'></div>
       <div>
         <div className='mt-6'>
           <CartDiscount />
+        </div>
+        <div className='mb-6'>
+          <label className='block text-md font-medium text-gray-600'>
+            Chọn phương thức thanh toán
+          </label>
+          <Select
+            value={paymentMethod}
+            onChange={setPaymentMethod}
+            defaultValue='credit_card'
+            className='w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500'
+            placeholder='Chọn phương thức thanh toán'
+          >
+            <Select.Option value='vnpay'>Ví VNPay</Select.Option>
+            <Select.Option value='cod'>Thanh toán khi nhận hàng</Select.Option>
+          </Select>
         </div>
         <div className='flex justify-between text-lg text-gray-700'>
           <span>Tạm tính:</span>
@@ -71,6 +163,7 @@ const CartOptions = () => {
           type='primary'
           className='w-full mt-6 py-3 text-lg font-semibold bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50 transition duration-300'
           size='large'
+          onClick={handleContinue}
         >
           Tiếp tục
         </Button>

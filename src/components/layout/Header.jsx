@@ -12,7 +12,7 @@ import { openModal } from '../../redux/slice/modal';
 import { ModalTypes } from '../../constant/modal';
 import { DownOutlined } from '@ant-design/icons';
 import { logoutSuccess } from '../../redux/slice/auth';
-import { selectCartTotalQuantity } from '../../redux/slice/cart';
+import { clearCart, selectCartTotalQuantity } from '../../redux/slice/cart';
 
 const Header = () => {
   const totalQuantityCart = useSelector(selectCartTotalQuantity);
@@ -49,6 +49,7 @@ const Header = () => {
     setConfirmLoading(true);
     setTimeout(() => {
       dispatch(logoutSuccess());
+      dispatch(clearCart());
       setOpen(false);
       setConfirmLoading(false);
     }, 2000);
