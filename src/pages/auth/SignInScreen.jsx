@@ -6,10 +6,13 @@ import { closeModal, openModal } from '../../redux/slice/modal';
 import { FaTimes } from 'react-icons/fa';
 import { signIn } from '../../service/auth';
 import { loginSuccess } from '../../redux/slice/auth';
+import useAuth from '../../hook/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const SignInScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const signInModal = useSelector(
@@ -31,6 +34,9 @@ const SignInScreen = () => {
         });
         dispatch(closeModal({ name: ModalTypes.SIGN_IN }));
         dispatch(loginSuccess({ ...result.user, token: result.token }));
+        if (result.user.role == 'owner') {
+          navigate('/admin');
+        }
       }
     } catch (error) {
       const messageError = error.response.data.message;

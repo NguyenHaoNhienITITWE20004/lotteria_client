@@ -4,4 +4,6 @@ export const ModalTypes = {
   PROFILE: 'profileModal',
   PRODUCT: 'productModal',
   USER: 'userModal',
+  CATEGORY: 'categoryModal',
+  ORDER: 'orderModal',
 };

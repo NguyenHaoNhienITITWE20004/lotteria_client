@@ -62,7 +62,7 @@ const Footer = () => {
   ];
 
   return (
-    <div className='bg-[#FFEAE3] mt-12 pt-5'>
+    <div className='bg-[#FFEAE3] pt-10 '>
       <div className='container  mx-auto px-4'>
         <div className='grid grid-cols-2 md:grid-cols-5 gap-8'>
           <div className='col-span-2 flex flex-col items-center'>

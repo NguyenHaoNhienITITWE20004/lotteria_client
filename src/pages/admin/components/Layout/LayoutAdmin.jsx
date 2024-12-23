@@ -10,10 +10,12 @@ const { Content } = Layout;
 const LayoutAdmin = () => {
   return (
     <Layout className='min-h-screen flex'>
-      <div className='w-[260px] bg-[#001529] text-gray-200 fixed left-0 top-0 bottom-0 '>
+      {/* Sidebar */}
+      <div className='w-[260px] bg-[#001529] text-gray-200 fixed left-0 top-0 bottom-0'>
         <SidebarAdmin />
       </div>
-      <Layout className='flex-1 ml-64'>
+      {/* Content Section */}
+      <Layout className='flex-1 ml-[260px]'>
         <HeaderAdmin />
         <div className='mt-5 ml-5'>
           <DynamicBreadcrumb />

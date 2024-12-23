@@ -72,18 +72,17 @@ const menuItems = [
     key: 'collection',
     icon: <GiftOutlined />,
     label: 'Collections',
-    path: '/admin/collections',
     children: [
       {
         key: 'manage-collection',
         label: 'Manage Collections',
-        path: '/admin/collections/manage',
+        path: '/admin/category',
         icon: <ContainerOutlined />,
       },
       {
         key: 'create-collection',
         label: 'Create Collection',
-        path: '/admin/collections/create',
+        path: '/admin/category/create',
         icon: <ContainerOutlined />,
       },
     ],

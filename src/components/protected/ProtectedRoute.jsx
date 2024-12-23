@@ -1,25 +1,18 @@
-/* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { ModalTypes } from '../../constant/modal';
-import { openModal } from '../../redux/slice/modal';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 import useAuth from '../../hook/useAuth';
 import { message } from 'antd';
 
 const ProtectedRoute = ({ children, requireAdmin }) => {
-  const { isAdmin, isLogin } = useAuth();
-  console.log(isLogin);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  console.log(location);
+  const { isAdmin, isLoggedIn } = useAuth();
 
-  if (!isLogin) {
-    return <Navigate to='/' state={{ openModal: true }} />;
+  if (!isLoggedIn) {
+    message.warning('Bạn cần đăng nhập để truy cập.');
+    return <Navigate to='/' state={{ openModal: true }} replace />;
   }
-  if (!isAdmin) {
-    return <Navigate to='/' />;
+
+  if (requireAdmin && !isAdmin) {
+    return <Navigate to='/404' replace />;
   }
 
   return children;

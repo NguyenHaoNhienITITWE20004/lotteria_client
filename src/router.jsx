@@ -11,6 +11,8 @@ import ManageDiscount from './pages/admin/features/discount/ManageDiscount';
 import ManageUser from './pages/admin/features/user/ManageUser';
 import PaymentScreen from './pages/payment/PaymentScreen';
 import ProtectedRoute from './components/protected/ProtectedRoute';
+import NotFoundScreen from './components/NotFoundScreen';
+import ManageCategory from './pages/admin/features/category/ManageCategory';
 
 const mainRouter = createBrowserRouter([
   {
@@ -28,7 +30,7 @@ const mainRouter = createBrowserRouter([
       {
         path: '/product/:id',
         element: (
-          <ProtectedRoute requireAdmin='false'>
+          <ProtectedRoute>
             <ProductMain />
           </ProtectedRoute>
         ),
@@ -36,7 +38,7 @@ const mainRouter = createBrowserRouter([
       {
         path: '/cart',
         element: (
-          <ProtectedRoute requireAdmin='false'>
+          <ProtectedRoute>
             <CartScreen />
           </ProtectedRoute>
         ),
@@ -44,7 +46,7 @@ const mainRouter = createBrowserRouter([
       {
         path: '/order',
         element: (
-          <ProtectedRoute requireAdmin='false'>
+          <ProtectedRoute>
             <OrderScreen />
           </ProtectedRoute>
         ),
@@ -53,12 +55,16 @@ const mainRouter = createBrowserRouter([
         path: '/payment/vnpay-return',
         element: <PaymentScreen />,
       },
+      {
+        path: '*',
+        element: <NotFoundScreen />,
+      },
     ],
   },
   {
     path: '/admin',
     element: (
-      <ProtectedRoute requireAdmin={true}>
+      <ProtectedRoute requireAdmin>
         <LayoutAdmin />
       </ProtectedRoute>
     ),
@@ -74,6 +80,14 @@ const mainRouter = createBrowserRouter([
       {
         path: 'users',
         element: <ManageUser />,
+      },
+      {
+        path: 'category',
+        element: <ManageCategory />,
+      },
+      {
+        path: '*',
+        element: <NotFoundScreen />,
       },
     ],
   },

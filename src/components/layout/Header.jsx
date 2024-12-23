@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import logo from '../../assets/images/lotteria_logo.png';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button, Select, Dropdown, Space, Popconfirm, Badge } from 'antd';
 import {
   accountMenu,
@@ -18,7 +18,7 @@ const Header = () => {
   const totalQuantityCart = useSelector(selectCartTotalQuantity);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser, isLogin } = useSelector((state) => state.auth);
+  const { currentUser, isLoggedIn } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth);
   console.log('🚀 ~ Header ~ user:', user);
   const [open, setOpen] = useState(false);
@@ -63,9 +63,11 @@ const Header = () => {
     <header className='bg-white shadow-md'>
       <div className='container mx-auto px-4 py-4 flex items-center justify-between'>
         <div className='flex items-center'>
-          <div>
-            <img src={logo} alt='Logo' width='67px' height='67px' />
-          </div>
+          <Link to='/'>
+            <div>
+              <img src={logo} alt='Logo' width='67px' height='67px' />
+            </div>
+          </Link>
           <nav className='hidden md:flex space-x-6 ml-16'>
             {navigateItems.map((item) => (
               <div key={item.id}>
@@ -120,7 +122,7 @@ const Header = () => {
           </div>
           <div className='flex space-x-4 mt-4 justify-between'>
             {accountMenu.map((item) => {
-              if (item.id === 2 && isLogin) {
+              if (item.id === 2 && isLoggedIn) {
                 return (
                   <div
                     key={item.id}

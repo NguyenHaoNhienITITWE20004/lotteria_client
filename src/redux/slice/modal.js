@@ -20,6 +20,14 @@ const initialState = {
       isOpen: false,
       content: null,
     },
+    [ModalTypes.CATEGORY]: {
+      isOpen: false,
+      content: null,
+    },
+    [ModalTypes.ORDER]: {
+      isOpen: false,
+      content: null,
+    },
   },
 };
 
