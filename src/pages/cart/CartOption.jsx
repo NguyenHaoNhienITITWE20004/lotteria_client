@@ -2,28 +2,29 @@ import React, { useState } from 'react';
 import { Button, Input, message, Select, Switch } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  selectCartDiscountedTotalPrice,
   selectCartItems,
   selectCartNote,
   selectCartTotalPrice,
+  updateCart,
 } from '../../redux/slice/cart';
 import { formatCurrencyVND } from '../../util/format';
 import CartDiscount from './CartDiscount';
-import { useNavigate } from 'react-router-dom';
 import { createOrder } from '../../service/order';
 import payment from '../../service/payment';
 import useAuth from '../../hook/useAuth';
 
 const CartOptions = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { currentUser } = useAuth();
   const userId = currentUser.id;
-  console.log(userId);
   const cartItems = useSelector(selectCartItems);
   const totalPrice = useSelector(selectCartTotalPrice);
+  const discountedTotalPrice = useSelector(selectCartDiscountedTotalPrice);
   const note = useSelector(selectCartNote);
 
   const [shippingAddress, setShippingAddress] = useState('');
+  const [discountCodeApplied, setDiscountCodeApplied] = useState(null);
   const [phone, setPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('vnpay');
 
@@ -37,11 +38,11 @@ const CartOptions = () => {
 
     const orderData = {
       userId,
-      totalPrice: totalPrice,
+      totalPrice: discountedTotalPrice,
       orderDetails: cartItems.map((item) => ({
         product_id: item.id,
         quantity: item.quantity,
-        price: item.price,
+        price: item.discounted_price,
       })),
       shippingAddress,
       phone,
@@ -49,11 +50,8 @@ const CartOptions = () => {
       note,
     };
 
-    console.log('orderData', orderData);
-
     try {
       const orderRes = await createOrder(orderData);
-
       if (orderRes && orderRes.success && orderRes.order) {
         const orderCreated = orderRes.order;
         const paymentData = {
@@ -63,9 +61,7 @@ const CartOptions = () => {
         };
 
         const paymentRes = await payment(paymentData);
-        console.log(paymentRes);
         if (paymentRes && paymentRes.success) {
-          console.log(paymentRes.paymentUrl);
           window.location.href = paymentRes.paymentUrl;
         } else {
           message.error('Thanh toán không thành công, vui lòng thử lại.');
@@ -74,7 +70,6 @@ const CartOptions = () => {
         message.error('Tạo đơn hàng không thành công, vui lòng thử lại.');
       }
     } catch (error) {
-      console.error(error);
       message.error('Đặt hàng thất bại, vui lòng thử lại.');
     }
   };
@@ -152,11 +147,21 @@ const CartOptions = () => {
         </div>
         <div className='flex justify-between text-lg text-gray-700'>
           <span>Tạm tính:</span>
-          <span className='font-semibold'>{formatCurrencyVND(totalPrice)}</span>
+          <span
+            className={`font-semibold ${
+              discountedTotalPrice < totalPrice
+                ? 'line-through text-gray-500'
+                : ''
+            }`}
+          >
+            {formatCurrencyVND(totalPrice)}
+          </span>
         </div>
         <div className='flex justify-between text-xl font-semibold text-gray-800 mt-2'>
           <span>Tổng cộng:</span>
-          <span className='text-red-600'>{formatCurrencyVND(totalPrice)}</span>
+          <span className='text-red-600'>
+            {formatCurrencyVND(discountedTotalPrice || totalPrice)}
+          </span>
         </div>
 
         <Button

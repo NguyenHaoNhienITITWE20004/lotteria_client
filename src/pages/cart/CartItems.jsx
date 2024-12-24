@@ -37,7 +37,7 @@ const CartItems = ({ cartItems }) => {
     <div className='bg-white p-4 rounded shadow-md'>
       <div className='border-b pb-2 mb-4 flex items-center justify-between'>
         <h2 className='text-lg font-semibold '>
-          GIỎ HÀNG CỦA BẠN ({cartItems.length} sản phẩm)
+          GIỎ HÀNG CỦA BẠN ({cartItems?.length} sản phẩm)
         </h2>
         <div>
           <Button
@@ -65,8 +65,23 @@ const CartItems = ({ cartItems }) => {
             />
             <div className='flex-1 px-4 space-y-1'>
               <h3 className='font-medium text-base'>{item.name}</h3>
-              <p className='text-red-500 text-base'>{item.price} ₫</p>
+
+              <div className='flex items-center'>
+                {item.discounted_price < item.price ? (
+                  <>
+                    <p className='text-red-500 text-base line-through'>
+                      {item.price} ₫
+                    </p>
+                    <p className='text-green-500 text-base ml-2'>
+                      {item.discounted_price} ₫
+                    </p>
+                  </>
+                ) : (
+                  <p className='text-red-500 text-base'>{item.price} ₫</p>
+                )}
+              </div>
             </div>
+
             <div className='flex items-center space-x-2'>
               <Button
                 type='primary'

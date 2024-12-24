@@ -9,7 +9,8 @@ import emptyCartImage from '../../assets/images/empty-cart.png';
 
 const CartScreen = () => {
   const cartItems = useSelector(selectCartItems);
-  if (cartItems.length === 0) {
+  console.log('🚀 ~ CartScreen ~ cartItems:', cartItems);
+  if (cartItems?.length === 0) {
     return (
       <div className='bg-pink-50'>
         <div className='col-span-12 flex flex-col items-center justify-center text-center py-10 h-[60vh]'>
