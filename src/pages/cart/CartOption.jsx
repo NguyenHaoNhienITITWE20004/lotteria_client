@@ -22,14 +22,12 @@ const CartOptions = () => {
   const totalPrice = useSelector(selectCartTotalPrice);
   const discountedTotalPrice = useSelector(selectCartDiscountedTotalPrice);
   const note = useSelector(selectCartNote);
-
   const [shippingAddress, setShippingAddress] = useState('');
-  const [discountCodeApplied, setDiscountCodeApplied] = useState(null);
   const [phone, setPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('vnpay');
 
   const handleContinue = async () => {
-    if (cartItems.length === 0) {
+    if (!cartItems || cartItems.length === 0) {
       return message.error('Giỏ hàng không có sản phẩm.');
     }
     if (!shippingAddress || !phone || !paymentMethod) {

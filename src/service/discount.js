@@ -18,7 +18,7 @@ const createDiscount = async (discountData) => {
 };
 const updateDiscount = async (discountId, discountData) => {
   try {
-    const res = await apiClient.put(
+    const res = await apiClient.patch(
       `/api/discount/${discountId}`,
       discountData,
     );

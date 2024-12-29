@@ -67,9 +67,9 @@ const cartSlice = createSlice({
       state.discounted_total_price = state.total_price;
       state.items = state.items.map((item) => ({
         ...item,
-        discounted_price: item.price, // Cập nhật giá gốc của item
-        discount_value: 0, // Reset giá trị giảm giá
-        discount_type: '', // Reset loại giảm giá
+        discounted_price: item.price,
+        discount_value: 0,
+        discount_type: '',
       }));
     },
 

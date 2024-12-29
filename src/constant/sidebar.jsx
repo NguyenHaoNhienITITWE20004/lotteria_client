@@ -8,13 +8,16 @@ import {
   GiftOutlined,
   ContainerOutlined,
 } from '@ant-design/icons';
+import { matchPath } from 'react-router-dom';
+
+const isOrderPage = matchPath('/admin/order/:id', location.pathname);
 
 const menuItems = [
   {
     key: 'dashboard',
     icon: <AppstoreOutlined />,
     label: 'Dashboard',
-    path: '/admin/',
+    index: true,
   },
   {
     key: 'product',
@@ -59,11 +62,12 @@ const menuItems = [
     icon: <ShoppingCartOutlined />,
     label: 'Orders',
     path: '/admin/orders',
+    className: isOrderPage ? 'active' : '',
     children: [
       {
         key: 'manage-order',
         label: 'Manage Orders',
-        path: '/admin/orders/manage',
+        path: '/admin/orders',
         icon: <ShoppingCartOutlined />,
       },
     ],
@@ -96,7 +100,7 @@ const menuItems = [
       {
         key: 'manage-discount',
         label: 'Manage Discounts',
-        path: '/admin/discounts/manage',
+        path: '/admin/discounts',
         icon: <TagOutlined />,
       },
       {

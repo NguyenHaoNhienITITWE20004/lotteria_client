@@ -5,7 +5,6 @@ import { ModalTypes } from '../../../../constant/modal';
 import { closeModal } from '../../../../redux/slice/modal';
 import { createUser, editUser } from '../../../../service/user';
 
-// eslint-disable-next-line react/prop-types
 const UserModal = ({ onOk }) => {
   const dispatch = useDispatch();
   const [form] = Form.useForm();

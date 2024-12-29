@@ -13,6 +13,8 @@ import PaymentScreen from './pages/payment/PaymentScreen';
 import ProtectedRoute from './components/protected/ProtectedRoute';
 import NotFoundScreen from './components/NotFoundScreen';
 import ManageCategory from './pages/admin/features/category/ManageCategory';
+import ManageOrder from './pages/admin/features/order/ManageOrder';
+import OrderDetail from './pages/admin/features/order/OrderDetail';
 
 const mainRouter = createBrowserRouter([
   {
@@ -70,7 +72,7 @@ const mainRouter = createBrowserRouter([
     ),
     children: [
       {
-        path: '',
+        index: true,
         element: <HomeAdminScreen />,
       },
       {
@@ -82,8 +84,20 @@ const mainRouter = createBrowserRouter([
         element: <ManageUser />,
       },
       {
+        path: 'orders',
+        element: <ManageOrder />,
+      },
+      {
+        path: 'order/:id',
+        element: <OrderDetail />,
+      },
+      {
         path: 'category',
         element: <ManageCategory />,
+      },
+      {
+        path: 'discounts',
+        element: <ManageDiscount />,
       },
       {
         path: '*',

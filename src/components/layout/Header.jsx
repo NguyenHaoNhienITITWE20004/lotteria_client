@@ -20,7 +20,6 @@ const Header = () => {
   const navigate = useNavigate();
   const { currentUser, isLoggedIn } = useSelector((state) => state.auth);
   const user = useSelector((state) => state.auth);
-  console.log('🚀 ~ Header ~ user:', user);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -52,7 +51,8 @@ const Header = () => {
       dispatch(clearCart());
       setOpen(false);
       setConfirmLoading(false);
-    }, 2000);
+      navigate('/');
+    }, 1000);
   };
 
   const handleCancel = () => {

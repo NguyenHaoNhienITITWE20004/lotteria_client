@@ -56,7 +56,7 @@ const ManageUser = () => {
     try {
       await deleteUser(key);
       message.success('User deleted successfully!');
-      setData((prevData) => prevData.filter((item) => item.key !== key));
+      fetchUsers();
     } catch (error) {
       message.error(error.response.data.message);
     }

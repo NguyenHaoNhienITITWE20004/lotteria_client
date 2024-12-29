@@ -6,4 +6,5 @@ export const ModalTypes = {
   USER: 'userModal',
   CATEGORY: 'categoryModal',
   ORDER: 'orderModal',
+  DISCOUNT: 'discountModal',
 };

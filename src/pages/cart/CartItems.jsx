@@ -37,7 +37,7 @@ const CartItems = ({ cartItems }) => {
     <div className='bg-white p-4 rounded shadow-md'>
       <div className='border-b pb-2 mb-4 flex items-center justify-between'>
         <h2 className='text-lg font-semibold '>
-          GIỎ HÀNG CỦA BẠN ({cartItems?.length} sản phẩm)
+          GIỎ HÀNG CỦA BẠN ({cartItems.length} sản phẩm)
         </h2>
         <div>
           <Button
@@ -53,7 +53,7 @@ const CartItems = ({ cartItems }) => {
       </div>
 
       <div className='min-h-[300px] overflow-y-scroll'>
-        {cartItems.map((item) => (
+        {cartItems?.map((item) => (
           <div
             key={item.id}
             className='flex items-center justify-between space-y-10 mb-6'

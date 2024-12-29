@@ -28,6 +28,10 @@ const initialState = {
       isOpen: false,
       content: null,
     },
+    [ModalTypes.DISCOUNT]: {
+      isOpen: false,
+      content: null,
+    },
   },
 };
 
