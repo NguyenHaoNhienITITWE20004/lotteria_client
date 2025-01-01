@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import useAuth from '../../hook/useAuth';
 import { getOrderByUser } from '../../service/order';
-import { formatCurrencyVND } from '../../util/format';
+import { formatCurrency } from '../../util/format';
 
 const { Title, Text } = Typography;
 
@@ -88,7 +88,7 @@ const OrderScreen = () => {
               style={{ padding: '6px' }}
               extra={
                 <Text strong className='text-2xl text-gray-700'>
-                  {formatCurrencyVND(order.total_price)}
+                  {formatCurrency(order.total_price)}
                 </Text>
               }
             >
@@ -173,7 +173,7 @@ const OrderScreen = () => {
                           <Text className='font-semibold text-gray-500'>
                             {detail.quantity} x{' '}
                             <span className='text-red-500'>
-                              {formatCurrencyVND(detail.price)}
+                              {formatCurrency(detail.price)}
                             </span>
                           </Text>
                         </div>

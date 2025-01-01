@@ -1,7 +1,20 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
-import { Form, Input, message, Modal, Select, Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import {
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Upload,
+  Button,
+  Space,
+} from 'antd';
+import {
+  UploadOutlined,
+  PlusOutlined,
+  MinusCircleOutlined,
+} from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { ModalTypes } from '../../../../constant/modal';
 import { closeModal } from '../../../../redux/slice/modal';
@@ -38,7 +51,7 @@ const ProductModal = ({ onOk, loading }) => {
   useEffect(() => {
     fetchCategory();
   }, []);
-
+  console.log(content);
   useEffect(() => {
     if (content) {
       form.setFieldsValue({
@@ -47,6 +60,12 @@ const ProductModal = ({ onOk, loading }) => {
         description: content.description,
         stock: content.stock,
         category: content.category_id,
+        options:
+          content.productOptions?.map((option) => ({
+            name: option.option.name,
+            value: option.option.value,
+            additional_price: option.option.additional_price || 0,
+          })) || [],
       });
 
       if (content.image) {
@@ -68,6 +87,12 @@ const ProductModal = ({ onOk, loading }) => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
+
+      const options = values.options?.map((option) => ({
+        ...option,
+        additional_price: parseFloat(option.additional_price) || 0,
+      }));
+
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('price', values.price);
@@ -78,6 +103,11 @@ const ProductModal = ({ onOk, loading }) => {
       if (fileList.length > 0 && fileList[0].originFileObj) {
         formData.append('image', fileList[0].originFileObj);
       }
+
+      if (options) {
+        formData.append('options', JSON.stringify(options));
+      }
+
       onOk(formData);
     } catch (err) {
       console.error(err);
@@ -151,6 +181,58 @@ const ProductModal = ({ onOk, loading }) => {
               </Select.Option>
             ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item label='Options'>
+          <Form.List name='options'>
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Space
+                    key={key}
+                    align='baseline'
+                    style={{ display: 'flex', marginBottom: 8 }}
+                  >
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'name']}
+                      rules={[
+                        { required: true, message: 'Missing option name' },
+                      ]}
+                    >
+                      <Input placeholder='Option Name' />
+                    </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'value']}
+                      rules={[
+                        { required: true, message: 'Missing option value' },
+                      ]}
+                    >
+                      <Input placeholder='Option Value' />
+                    </Form.Item>
+                    <Form.Item
+                      {...restField}
+                      name={[name, 'additional_price']}
+                      rules={[{ required: false }]}
+                    >
+                      <Input type='number' placeholder='Additional Price' />
+                    </Form.Item>
+                    <MinusCircleOutlined onClick={() => remove(name)} />
+                  </Space>
+                ))}
+                <Form.Item>
+                  <Button
+                    type='dashed'
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Option
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
         </Form.Item>
 
         <Form.Item

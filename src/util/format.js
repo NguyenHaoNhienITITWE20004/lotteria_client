@@ -1,7 +1,7 @@
 // format currency
-export const formatCurrencyVND = (amount) => {
+export const formatCurrency = (amount) => {
   if (isNaN(amount)) return '';
-  return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
 //format date time

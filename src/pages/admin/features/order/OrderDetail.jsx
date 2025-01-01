@@ -12,7 +12,7 @@ import {
   message,
 } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
-import { formatCurrencyVND } from '../../../../util/format';
+import { formatCurrency } from '../../../../util/format';
 import { updateDelivery } from '../../../../service/delivery';
 
 const { Option } = Select;
@@ -145,7 +145,7 @@ const OrderDetail = () => {
                       <Col>
                         <strong>Total: </strong>
                         <span className='text-red-500 text-base'>
-                          {formatCurrencyVND(item.price)}
+                          {formatCurrency(item.price)}
                         </span>
                       </Col>
                     </Row>

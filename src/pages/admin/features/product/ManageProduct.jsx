@@ -12,7 +12,7 @@ import { closeModal, openModal } from '../../../../redux/slice/modal';
 import { ModalTypes } from '../../../../constant/modal';
 import moment from 'moment';
 import ProductModal from './ProductModal';
-import { formatCurrencyVND } from '../../../../util/format';
+import { formatCurrency } from '../../../../util/format';
 
 const ManageProduct = () => {
   const dispatch = useDispatch();
@@ -139,7 +139,7 @@ const ManageProduct = () => {
       dataIndex: 'image',
       key: 'image',
       render: (imageUrl) => (
-        <img src={imageUrl} alt='user image' className='w-20 object-cover' />
+        <img src={imageUrl} alt='product image' className='w-20 object-cover' />
       ),
     },
     {
@@ -148,7 +148,7 @@ const ManageProduct = () => {
       key: 'price',
       sorter: (a, b) => a.price - b.price,
       render: (price) => (
-        <p className='text-red-600 font-medium'>{formatCurrencyVND(price)}</p>
+        <p className='text-red-600 font-medium'>{formatCurrency(price)}</p>
       ),
     },
     {
@@ -159,39 +159,42 @@ const ManageProduct = () => {
       sorter: (a, b) => a.category?.name.localeCompare(b.category?.name),
     },
     {
-      title: 'Created At',
-      dataIndex: 'created_at',
-      key: 'created_at',
-      render: (created_at) => {
-        return <div>{moment(created_at).format('YYYY-MM-DD')}</div>;
+      title: 'Options',
+      dataIndex: 'productOptions',
+      key: 'options',
+      render: (productOptions) => {
+        if (!productOptions || productOptions.length === 0) {
+          return <span>None</span>;
+        }
+        return (
+          <ul>
+            {productOptions.map((option) => (
+              <li key={option.id}>
+                {option.option.name}: {option.option.value} (+
+                {formatCurrency(option.option.additional_price)})
+              </li>
+            ))}
+          </ul>
+        );
       },
-      sorter: (a, b) =>
-        moment(a.created_at).unix() - moment(b.created_at).unix(),
     },
     {
       title: 'Actions',
       key: 'actions',
-      render: (_, record) => (
-        <Space size='small'>
+      render: (text, record) => (
+        <Space>
           <Button
-            type='link'
+            type='primary'
             icon={<EditOutlined />}
             onClick={() => handleEdit(record)}
-            className='text-blue-500'
           >
             Edit
           </Button>
           <Popconfirm
-            title='Are you sure you want to delete this product?'
+            title='Are you sure?'
             onConfirm={() => handleDelete(record.key)}
-            okText='Yes'
-            cancelText='No'
           >
-            <Button
-              type='link'
-              icon={<DeleteOutlined />}
-              className='text-red-500'
-            >
+            <Button type='danger' icon={<DeleteOutlined />}>
               Delete
             </Button>
           </Popconfirm>

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ModalTypes } from '../../../../constant/modal';
 import { closeModal } from '../../../../redux/slice/modal';
 import moment from 'moment';
-import { updateDiscount, createDiscount } from '../../../../service/discount';
 import { users } from '../../../../service/user';
 import { products } from '../../../../service/product';
 

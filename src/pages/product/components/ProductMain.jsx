@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '../../../service/product';
-import { Button, InputNumber, Skeleton, Row, Col, Card } from 'antd';
+import { Button, InputNumber, Skeleton, Row, Col, Card, Select } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { formatCurrencyVND } from '../../../util/format';
+import { formatCurrency } from '../../../util/format';
+import { useDispatch } from 'react-redux';
+import { addItemToCart } from '../../../redux/slice/cart';
 
 const ProductMain = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -28,6 +32,30 @@ const ProductMain = () => {
     setQuantity(value);
   };
 
+  const handleOptionChange = (optionId, value) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [optionId]: value,
+    }));
+  };
+
+  const calculatePrice = () => {
+    let price = product.price;
+
+    product.productOptions.forEach((option) => {
+      const selectedValue = selectedOptions[option.option.id];
+      if (selectedValue && option.option.value === selectedValue) {
+        price += option.option.additional_price;
+      }
+    });
+
+    return price;
+  };
+
+  const handleClick = () => {
+    dispatch(addItemToCart({ ...product, quantity, selectedOptions }));
+  };
+
   if (loading) {
     return (
       <div className='max-w-screen-xl mx-auto p-4'>
@@ -43,7 +71,7 @@ const ProductMain = () => {
           <img
             src={product.image}
             alt={product.name}
-            className='w-full  rounded-lg '
+            className='w-full rounded-lg'
           />
         </Col>
 
@@ -56,7 +84,7 @@ const ProductMain = () => {
               {product.description}
             </div>
             <div className='mt-4 text-xl font-semibold text-red-600'>
-              {formatCurrencyVND(product.price)} VND
+              {formatCurrency(calculatePrice())} VND
             </div>
             <div className='pt-10'>
               <div className='mb-2 text-sm font-semibold text-gray-700'>
@@ -89,16 +117,33 @@ const ProductMain = () => {
                 />
               </div>
             </div>
+
+            {product.productOptions.map((productOption) => (
+              <div key={productOption.id} className='mt-4'>
+                <div className='mb-2 text-sm font-semibold text-gray-700'>
+                  {productOption.option.name}
+                </div>
+                <Select
+                  value={selectedOptions[productOption.option.id] || undefined}
+                  onChange={(value) =>
+                    handleOptionChange(productOption.option.id, value)
+                  }
+                  className='w-full'
+                >
+                  <Select.Option value={productOption.option.value}>
+                    {productOption.option.value} (+
+                    {formatCurrency(productOption.option.additional_price)} VND)
+                  </Select.Option>
+                </Select>
+              </div>
+            ))}
+
             <div className='px-[50px]'>
               <Button
                 type='primary'
                 size='large'
                 className='w-full bg-red-500 hover:bg-red-600 text-white mt-12'
-                onClick={() => {
-                  console.log(
-                    `Added ${quantity} item(s) of ${product.name} to the cart`,
-                  );
-                }}
+                onClick={handleClick}
               >
                 Thêm vào giỏ hàng
               </Button>

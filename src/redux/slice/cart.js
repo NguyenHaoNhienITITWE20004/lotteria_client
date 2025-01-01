@@ -29,7 +29,7 @@ const cartSlice = createSlice({
           discount_type: '',
           discount_code: '',
           line_price: newItem.price * 1,
-          quantity: 1,
+          quantity: action.payload.quantity || 1,
         });
       }
       const { totalQuantity, totalPrice } = calculateCartTotals(state.items);
@@ -92,8 +92,8 @@ const cartSlice = createSlice({
       state.total_quantity = 0;
       state.total_price = 0;
       state.note = '';
-      state.discount = 0;
       state.discount_code = '';
+      state.discounted_total_price = 0;
     },
   },
 });

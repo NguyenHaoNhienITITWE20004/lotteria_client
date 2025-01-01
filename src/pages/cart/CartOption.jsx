@@ -8,7 +8,7 @@ import {
   selectCartTotalPrice,
   updateCart,
 } from '../../redux/slice/cart';
-import { formatCurrencyVND } from '../../util/format';
+import { formatCurrency } from '../../util/format';
 import CartDiscount from './CartDiscount';
 import { createOrder } from '../../service/order';
 import payment from '../../service/payment';
@@ -152,13 +152,13 @@ const CartOptions = () => {
                 : ''
             }`}
           >
-            {formatCurrencyVND(totalPrice)}
+            {formatCurrency(totalPrice)}
           </span>
         </div>
         <div className='flex justify-between text-xl font-semibold text-gray-800 mt-2'>
           <span>Tổng cộng:</span>
           <span className='text-red-600'>
-            {formatCurrencyVND(discountedTotalPrice || totalPrice)}
+            {formatCurrency(discountedTotalPrice || totalPrice)}
           </span>
         </div>
 
