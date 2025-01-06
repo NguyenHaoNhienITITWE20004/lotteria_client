@@ -17,10 +17,15 @@ const cartSlice = createSlice({
     addItemToCart: (state, action) => {
       const newItem = action.payload;
       console.log(newItem);
-      const existingItem = state.items.find((item) => item.id === newItem.id);
+      const existingItem = state.items.find(
+        (item) =>
+          item.id === newItem.id &&
+          JSON.stringify(item.selectedOptions) ===
+            JSON.stringify(newItem.selectedOptions),
+      );
 
       if (existingItem) {
-        existingItem.quantity += newItem.quantity || 1;
+        existingItem.quantity += newItem.quantity;
       } else {
         state.items.push({
           ...newItem,
@@ -28,15 +33,18 @@ const cartSlice = createSlice({
           discount_value: 0,
           discount_type: '',
           discount_code: '',
-          line_price: newItem.price * 1,
-          quantity: action.payload.quantity || 1,
+          line_price: newItem.price * newItem.quantity,
+          quantity: newItem.quantity,
+          selectedOptions: newItem.selectedOptions,
         });
       }
+
       const { totalQuantity, totalPrice } = calculateCartTotals(state.items);
       state.total_quantity = totalQuantity;
       state.discounted_total_price = totalPrice;
       state.total_price = totalPrice;
     },
+
     removeItemFromCart: (state, action) => {
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
@@ -74,8 +82,13 @@ const cartSlice = createSlice({
     },
 
     updateItemQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
+      const { id, quantity, selectedOptions } = action.payload;
+      const existingItem = state.items.find(
+        (item) =>
+          item.id === id &&
+          JSON.stringify(item.selectedOptions) ===
+            JSON.stringify(selectedOptions),
+      );
       if (existingItem) {
         existingItem.quantity = quantity;
       }
@@ -83,6 +96,7 @@ const cartSlice = createSlice({
       state.total_quantity = totalQuantity;
       state.total_price = totalPrice;
     },
+
     updateNote: (state, action) => {
       state.note = action.payload;
     },

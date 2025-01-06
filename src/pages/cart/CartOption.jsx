@@ -19,6 +19,7 @@ const CartOptions = () => {
   const { currentUser } = useAuth();
   const userId = currentUser.id;
   const cartItems = useSelector(selectCartItems);
+  console.log('🚀 ~ CartOptions ~ cartItems :', cartItems);
   const totalPrice = useSelector(selectCartTotalPrice);
   const discountedTotalPrice = useSelector(selectCartDiscountedTotalPrice);
   const note = useSelector(selectCartNote);
@@ -33,10 +34,11 @@ const CartOptions = () => {
     if (!shippingAddress || !phone || !paymentMethod) {
       return message.error('Vui lòng nhập đầy đủ thông tin.');
     }
-
+    const final_price =
+      discountedTotalPrice > totalPrice ? totalPrice : discountedTotalPrice;
     const orderData = {
       userId,
-      totalPrice: discountedTotalPrice,
+      totalPrice: final_price * 25000,
       orderDetails: cartItems.map((item) => ({
         product_id: item.id,
         quantity: item.quantity,
@@ -157,9 +159,13 @@ const CartOptions = () => {
         </div>
         <div className='flex justify-between text-xl font-semibold text-gray-800 mt-2'>
           <span>Tổng cộng:</span>
-          <span className='text-red-600'>
-            {formatCurrency(discountedTotalPrice || totalPrice)}
-          </span>
+          {discountedTotalPrice < totalPrice ? (
+            <span className='text-red-600'>
+              {formatCurrency(discountedTotalPrice || totalPrice)}
+            </span>
+          ) : (
+            <span className='text-red-600'>{formatCurrency(totalPrice)}</span>
+          )}
         </div>
 
         <Button

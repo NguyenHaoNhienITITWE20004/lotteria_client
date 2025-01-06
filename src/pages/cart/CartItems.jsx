@@ -9,6 +9,7 @@ import {
   updateItemQuantity,
   updateNote,
 } from '../../redux/slice/cart';
+import { formatCurrency } from '../../util/format';
 
 const CartItems = ({ cartItems }) => {
   const dispatch = useDispatch();
@@ -70,16 +71,28 @@ const CartItems = ({ cartItems }) => {
                 {item.discounted_price < item.price ? (
                   <>
                     <p className='text-red-500 text-base line-through'>
-                      {item.price} ₫
+                      {formatCurrency(item.price)}
                     </p>
                     <p className='text-green-500 text-base ml-2'>
-                      {item.discounted_price} ₫
+                      {formatCurrency(item.discounted_price)}
                     </p>
                   </>
                 ) : (
-                  <p className='text-red-500 text-base'>{item.price} ₫</p>
+                  <p className='text-red-500 text-base'>
+                    {formatCurrency(item.price)}
+                  </p>
                 )}
               </div>
+
+              {item.productOptions?.map((option) => (
+                <div key={option.id} className='flex items-center text-sm'>
+                  <span className='font-medium'>{option.option.name}: </span>
+                  <span>{item.selectedOptions[option.option.name]}</span>
+                  <span className='ml-2 text-sm text-gray-500'>
+                    (+{formatCurrency(option.option.additional_price)} )
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className='flex items-center space-x-2'>

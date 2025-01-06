@@ -115,9 +115,9 @@ const OrderDetail = () => {
                 </Select>
               </Descriptions.Item>
             </Descriptions>
-            <Button type='primary' icon={<EditOutlined />} className='mt-4'>
+            {/* <Button type='primary' icon={<EditOutlined />} className='mt-4'>
               Edit Order
-            </Button>
+            </Button> */}
           </div>
 
           <div className='space-y-6'>

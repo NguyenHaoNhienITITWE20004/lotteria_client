@@ -53,7 +53,15 @@ const ProductMain = () => {
   };
 
   const handleClick = () => {
-    dispatch(addItemToCart({ ...product, quantity, selectedOptions }));
+    const price = calculatePrice();
+    dispatch(
+      addItemToCart({
+        ...product,
+        quantity,
+        selectedOptions,
+        price,
+      }),
+    );
   };
 
   if (loading) {
@@ -63,6 +71,15 @@ const ProductMain = () => {
       </div>
     );
   }
+
+  const groupedOptions = product.productOptions.reduce((acc, productOption) => {
+    const optionName = productOption.option.name;
+    if (!acc[optionName]) {
+      acc[optionName] = [];
+    }
+    acc[optionName].push(productOption);
+    return acc;
+  }, {});
 
   return (
     <div className='container mx-auto my-[100px]'>
@@ -117,23 +134,28 @@ const ProductMain = () => {
                 />
               </div>
             </div>
-
-            {product.productOptions.map((productOption) => (
-              <div key={productOption.id} className='mt-4'>
+            {Object.keys(groupedOptions).map((optionName) => (
+              <div key={optionName} className='mt-4'>
                 <div className='mb-2 text-sm font-semibold text-gray-700'>
-                  {productOption.option.name}
+                  {optionName}
                 </div>
                 <Select
-                  value={selectedOptions[productOption.option.id] || undefined}
-                  onChange={(value) =>
-                    handleOptionChange(productOption.option.id, value)
-                  }
+                  value={selectedOptions[optionName] || undefined}
+                  onChange={(value) => handleOptionChange(optionName, value)}
                   className='w-full'
                 >
-                  <Select.Option value={productOption.option.value}>
-                    {productOption.option.value} (+
-                    {formatCurrency(productOption.option.additional_price)} VND)
-                  </Select.Option>
+                  {groupedOptions[optionName].map((productOption) => (
+                    <Select.Option
+                      key={productOption.option.id}
+                      value={productOption.option.value}
+                    >
+                      {productOption.option.value} (+
+                      {formatCurrency(
+                        productOption.option.additional_price,
+                      )}{' '}
+                      VND)
+                    </Select.Option>
+                  ))}
                 </Select>
               </div>
             ))}

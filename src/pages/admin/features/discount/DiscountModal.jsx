@@ -121,7 +121,7 @@ const DiscountModal = ({ onOk }) => {
           label='Start Date'
           rules={[{ required: true, message: 'Please select start date!' }]}
         >
-          <DatePicker showTime />
+          <DatePicker format='DD/MM/YYYY' showTime />
         </Form.Item>
 
         <Form.Item
