@@ -12,7 +12,6 @@ import CategoryModal from './CategoryModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeModal, openModal } from '../../../../redux/slice/modal';
 import { ModalTypes } from '../../../../constant/modal';
-import { formatCurrency } from '../../../../util/format';
 
 const { Panel } = Collapse;
 
@@ -220,9 +219,7 @@ const ManageCategory = () => {
                             <p className='text-gray-500'>
                               {product.description}
                             </p>
-                            <p className='font-bold text-red-500'>
-                              {formatCurrency(product.price)}
-                            </p>
+                            <p className='font-bold text-red-500'>{`₫${product.price.toLocaleString()}`}</p>
                           </div>
                         </li>
                       ))

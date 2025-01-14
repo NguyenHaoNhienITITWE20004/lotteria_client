@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button, Card, message, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { formatCurrency } from '../../../util/format';
+import { formatCurrencyVND } from '../../../util/format';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addItemToCart } from '../../../redux/slice/cart';
@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
               <div>{product.category.name}</div>
               <div className='flex items-center justify-between'>
                 <div className='mt-1 text-lg font-semibold text-red-600'>
-                  {formatCurrency(product.price)} VND
+                  {formatCurrencyVND(product.price)} VND
                 </div>
                 <div className='mt-2'>
                   <Tooltip title='Thêm vào giỏ hàng'>

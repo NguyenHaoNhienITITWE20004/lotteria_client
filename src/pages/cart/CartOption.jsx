@@ -8,7 +8,7 @@ import {
   selectCartTotalPrice,
   updateCart,
 } from '../../redux/slice/cart';
-import { formatCurrency } from '../../util/format';
+import { formatCurrencyVND } from '../../util/format';
 import CartDiscount from './CartDiscount';
 import { createOrder } from '../../service/order';
 import payment from '../../service/payment';
@@ -154,11 +154,12 @@ const CartOptions = () => {
                 : ''
             }`}
           >
-            {formatCurrency(totalPrice)}
+            {formatCurrencyVND(totalPrice)}
           </span>
         </div>
         <div className='flex justify-between text-xl font-semibold text-gray-800 mt-2'>
           <span>Tổng cộng:</span>
+<<<<<<< HEAD
           {discountedTotalPrice < totalPrice ? (
             <span className='text-red-600'>
               {formatCurrency(discountedTotalPrice || totalPrice)}
@@ -166,6 +167,11 @@ const CartOptions = () => {
           ) : (
             <span className='text-red-600'>{formatCurrency(totalPrice)}</span>
           )}
+=======
+          <span className='text-red-600'>
+            {formatCurrencyVND(discountedTotalPrice || totalPrice)}
+          </span>
+>>>>>>> parent of c480a32 (feat : options)
         </div>
 
         <Button

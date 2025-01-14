@@ -33,9 +33,14 @@ const cartSlice = createSlice({
           discount_value: 0,
           discount_type: '',
           discount_code: '',
+<<<<<<< HEAD
           line_price: newItem.price * newItem.quantity,
           quantity: newItem.quantity,
           selectedOptions: newItem.selectedOptions,
+=======
+          line_price: newItem.price * 1,
+          quantity: 1,
+>>>>>>> parent of c480a32 (feat : options)
         });
       }
 
@@ -106,8 +111,8 @@ const cartSlice = createSlice({
       state.total_quantity = 0;
       state.total_price = 0;
       state.note = '';
+      state.discount = 0;
       state.discount_code = '';
-      state.discounted_total_price = 0;
     },
   },
 });

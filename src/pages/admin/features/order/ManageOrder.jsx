@@ -8,7 +8,7 @@ import {
   EyeOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { formatCurrency } from '../../../../util/format';
+import { formatCurrencyVND } from '../../../../util/format';
 import OrderModal from './OrderModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { openModal } from '../../../../redux/slice/modal';
@@ -88,7 +88,7 @@ const ManageOrder = () => {
       title: 'Total Value',
       dataIndex: 'total_price',
       key: 'total_price',
-      render: (price) => <div>{formatCurrency(price)}</div>,
+      render: (price) => <div>{formatCurrencyVND(price)}</div>,
     },
     {
       title: 'Payment Status',

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProductById } from '../../../service/product';
-import { Button, InputNumber, Skeleton, Row, Col, Card, Select } from 'antd';
+import { Button, InputNumber, Skeleton, Row, Col, Card } from 'antd';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { formatCurrency } from '../../../util/format';
-import { useDispatch } from 'react-redux';
-import { addItemToCart } from '../../../redux/slice/cart';
+import { formatCurrencyVND } from '../../../util/format';
 
 const ProductMain = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
-  const [selectedOptions, setSelectedOptions] = useState({});
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -32,6 +28,7 @@ const ProductMain = () => {
     setQuantity(value);
   };
 
+<<<<<<< HEAD
   const handleOptionChange = (optionId, value) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -64,6 +61,8 @@ const ProductMain = () => {
     );
   };
 
+=======
+>>>>>>> parent of c480a32 (feat : options)
   if (loading) {
     return (
       <div className='max-w-screen-xl mx-auto p-4'>
@@ -88,7 +87,7 @@ const ProductMain = () => {
           <img
             src={product.image}
             alt={product.name}
-            className='w-full rounded-lg'
+            className='w-full  rounded-lg '
           />
         </Col>
 
@@ -101,7 +100,7 @@ const ProductMain = () => {
               {product.description}
             </div>
             <div className='mt-4 text-xl font-semibold text-red-600'>
-              {formatCurrency(calculatePrice())} VND
+              {formatCurrencyVND(product.price)} VND
             </div>
             <div className='pt-10'>
               <div className='mb-2 text-sm font-semibold text-gray-700'>
@@ -134,6 +133,7 @@ const ProductMain = () => {
                 />
               </div>
             </div>
+<<<<<<< HEAD
             {Object.keys(groupedOptions).map((optionName) => (
               <div key={optionName} className='mt-4'>
                 <div className='mb-2 text-sm font-semibold text-gray-700'>
@@ -160,12 +160,18 @@ const ProductMain = () => {
               </div>
             ))}
 
+=======
+>>>>>>> parent of c480a32 (feat : options)
             <div className='px-[50px]'>
               <Button
                 type='primary'
                 size='large'
                 className='w-full bg-red-500 hover:bg-red-600 text-white mt-12'
-                onClick={handleClick}
+                onClick={() => {
+                  console.log(
+                    `Added ${quantity} item(s) of ${product.name} to the cart`,
+                  );
+                }}
               >
                 Thêm vào giỏ hàng
               </Button>

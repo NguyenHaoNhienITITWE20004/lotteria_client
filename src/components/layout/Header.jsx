@@ -16,7 +16,6 @@ import { clearCart, selectCartTotalQuantity } from '../../redux/slice/cart';
 
 const Header = () => {
   const totalQuantityCart = useSelector(selectCartTotalQuantity);
-  const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser, isLoggedIn } = useSelector((state) => state.auth);
@@ -179,7 +178,7 @@ const Header = () => {
                     <img src={item.link} alt='' />
                     {item.id === 4 && (
                       <div className='absolute -right-5 -top-2'>
-                        <Badge count={cartItems.length} />
+                        <Badge count={totalQuantityCart} />
                       </div>
                     )}
                   </div>
